@@ -1,16 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('Git Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/YOUR_GITHUB_USERNAME/laravel-three-tier.git'
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build image using local docker daemon
-                    sh 'docker build -t your-dockerhub-username/laravel-app:latest .'
+                    sh 'docker build -t mister1946/laravel-app:latest .'
                 }
             }
         }
@@ -18,7 +12,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USER')]) {
                     sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin"
-                    sh 'docker push your-dockerhub-username/laravel-app:latest'
+                    sh 'docker push mister1946/laravel-app:latest'
                 }
             }
         }
@@ -29,4 +23,4 @@ pipeline {
             }
         }
     }
-}
+}            
